@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/*
+ * ---------------------------------------------------------------------------
+ * DESIGN TOKENS — AEROSPACE & DEFENSE
+ * ---------------------------------------------------------------------------
+ * The visual language is deliberately *engineered* rather than friendly:
+ * squared corners, hairline rules, monospace metadata, blueprint grids and a
+ * cold graphite/cyan palette. Procurement engineers and program managers are
+ * the audience, so the page should read like a controlled document rather than
+ * a brochure.
+ *
+ * Two variables drive the whole palette (--brand, --accent) and are injected
+ * onto :root at request time by src/app/layout.js from Settings, so a supplier
+ * can rebrand without touching CSS. Every other shade derives from them with
+ * color-mix().
+ */
+:root {
+  --brand: #0e8f9e;
+  --accent: #d98324;
+  --ink: #0a0f14;
+  --ink-soft: #121a22;
+}
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-dark: color-mix(in oklab, var(--brand), black 20%);
+  --color-brand-light: color-mix(in oklab, var(--brand), white 88%);
+  --color-accent: var(--accent);
+  --color-accent-dark: color-mix(in oklab, var(--accent), black 16%);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+
+  /* Steel greys — cooler than Tailwind's slate, closer to machined aluminium. */
+  --color-steel-50: #f4f6f8;
+  --color-steel-100: #e7ebef;
+  --color-steel-200: #cfd6dd;
+  --color-steel-300: #aab5bf;
+  --color-steel-400: #7c8894;
+  --color-steel-500: #5a656f;
+  --color-steel-600: #414a53;
+  --color-steel-700: #2c343b;
+  --color-steel-800: #1b2228;
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-admin: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+
+  /* Flat, technical elevation — no soft consumer glows. */
+  --shadow-panel: 0 1px 0 0 rgb(10 15 20 / 0.06), 0 1px 2px 0 rgb(10 15 20 / 0.05);
+  --shadow-raised: 0 1px 0 0 rgb(10 15 20 / 0.08), 0 8px 24px -12px rgb(10 15 20 / 0.25);
+  --shadow-deep: 0 24px 48px -24px rgb(10 15 20 / 0.45);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  /* Anchor targets clear the sticky header. */
+  :where(section[id], div[id]) {
+    scroll-margin-top: 5rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+/* Tabular figures everywhere numbers matter: specs, tolerances, counts. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * SURFACES
+ * ---------------------------------------------------------------------------
+ */
+
+/* Graphite ground with a cold cyan wash — the dark sections. */
+.surface-graphite {
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(
+      65% 55% at 8% 0%,
+      color-mix(in oklab, var(--brand), transparent 80%) 0%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 0.35) 100%);
+}
+
+/* Blueprint grid: 1px lines on an 8px module with a heavier 64px major grid. */
+.blueprint {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.025) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px,
+    8px 8px,
+    8px 8px;
+}
+
+.blueprint-light {
+  background-image:
+    linear-gradient(to right, rgb(10 15 20 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(10 15 20 / 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Corner registration marks, implying a drawing frame around a panel. */
+.registration::before,
+.registration::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--brand);
+  opacity: 0.55;
+}
+
+.registration::before {
+  top: -1px;
+  left: -1px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.registration::after {
+  right: -1px;
+  bottom: -1px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+
+/* Diagonal hazard stripes — used sparingly, on export-control notices. */
+.hazard {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in oklab, var(--accent), transparent 82%) 0px,
+    color-mix(in oklab, var(--accent), transparent 82%) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * MOTION
+ * ---------------------------------------------------------------------------
+ * Restrained on purpose: measured fades and a scanning line, nothing bouncy.
+ */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  opacity: 0;
+  animation: 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards rise-in;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-left {
+  transform: translateX(-22px);
+}
+
+.reveal-right {
+  transform: translateX(22px);
+}
+
+.reveal-scale {
+  transform: scale(0.97);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Slow horizontal sweep, like an inspection scan. */
+@keyframes scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.scan-line {
+  animation: scan 5.5s linear infinite;
+}
+
+/* Marquee for the certification / industry strip. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+    opacity: 1;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .scan-line,
+  .marquee-track {
+    animation: none;
+  }
+}
