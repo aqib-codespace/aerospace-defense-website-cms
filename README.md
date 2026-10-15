@@ -1,5 +1,7 @@
 # Aerospace & Defense Manufacturer Website + CMS
 
+[![Live demo](https://img.shields.io/badge/Live_demo-aerospace--defense.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://aerospace-defense.vercel.app)
+
 A procurement-focused marketing site for a precision aerospace and defense
 manufacturer, with a full content management panel and a request-for-quote
 (RFQ) pipeline that accepts CAD drawings. Every word, figure, photo, colour,
